@@ -16,6 +16,10 @@ modules:
   - type: script
     snippets:
       - sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/terra.repo /etc/yum.repos.d/terra-extras.repo
+      # Disable the -source repos the blanket sed above re-enabled — we don't
+      # need source RPM metadata and it's extra churn on Terra's side.
+      - sed -i '/^\[terra-source\]/,/^\[/{s/^enabled=1/enabled=0/}' /etc/yum.repos.d/terra.repo
+      - sed -i '/^\[terra-extras-source\]/,/^\[/{s/^enabled=1/enabled=0/}' /etc/yum.repos.d/terra-extras.repo
 
   - type: rpm-ostree
     repos:

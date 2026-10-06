@@ -26,7 +26,7 @@ modules:
       - mangowm
       # Umbriel compositor — Terra, nightly builds
       - umbriel-nightly
-      - xdg-desktop-portal-umbriel # XDG portal for the Umbriel session (screenshare etc.)
+      - xdg-desktop-portal-umbriel-nightly # XDG portal for the Umbriel session (screenshare etc.)
       # Brave Origin browser
       - brave-origin
       # Faugus Launcher — UMU-based launcher (Terra; umu-launcher already ships in Bazzite)

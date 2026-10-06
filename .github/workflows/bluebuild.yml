@@ -31,6 +31,7 @@ jobs:
           # Image signing: cosign.pub sits at the repo root, the private key is
           # the SIGNING_SECRET repo secret (setup: https://blue-build.org/how-to/cosign/)
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
+          registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}
           maximize_build_space: true
           use_cache: false

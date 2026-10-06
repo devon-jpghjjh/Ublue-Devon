@@ -32,7 +32,7 @@ The image comes up as a working QEMU/KVM host:
 ## Building
 
 - **GitHub Actions**: `BlueBuild` workflow builds `recipe.yml` on every push to `main` (plus daily) and pushes to `ghcr.io/<owner>/devon-bazzite`. The `Build ISO` workflow turns that image into an Anaconda ISO via [jasonn3/build-container-installer](https://github.com/jasonn3/build-container-installer) and uploads it as a job artifact. Both can be run manually via *Run workflow*.
-- **Locally**: `bluebuild build ./recipe.yml`
+- **Locally**: `bluebuild build ./recipes/recipe.yml`
 
 ### Required setup before the first run
 

@@ -28,12 +28,9 @@ jobs:
         uses: blue-build/github-action@v1.13
         with:
           recipe: recipe.yml
-          # Signing stays off until cosign is set up (there is no `cosign_sign`
-          # input on this action). To enable: generate a key pair
-          # (`cosign generate-key-pair`), put the private key in the SIGNING_SECRET
-          # repo secret, commit cosign.pub to the repo root, then add:
-          #   cosign_private_key: ${{ secrets.SIGNING_SECRET }}
-          # https://blue-build.org/how-to/cosign/
+          # Image signing: cosign.pub sits at the repo root, the private key is
+          # the SIGNING_SECRET repo secret (setup: https://blue-build.org/how-to/cosign/)
+          cosign_private_key: ${{ secrets.SIGNING_SECRET }}
           pr_event_number: ${{ github.event.number }}
           maximize_build_space: true
           use_cache: false

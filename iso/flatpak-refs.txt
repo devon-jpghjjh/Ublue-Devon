@@ -1,0 +1,32 @@
+# Flatpaks baked into the installer ISO — installed by Anaconda at install time.
+# Mirrors Bazzite's own KDE set: installer/kde_flatpaks/flatpaks plus the
+# kinoite extras. One ref per line; blank lines and # lines are ignored.
+# Strike any line for an app you don't want on the installed system.
+#
+# The "runtime" VulkanLayer/OBS refs are pinned to a version branch (25.08) —
+# keep that branch segment exactly as-is if you edit or add overlay runtimes.
+
+# --- Bazzite KDE desktop apps ---
+app/org.mozilla.firefox/x86_64/stable
+app/org.kde.gwenview/x86_64/stable
+app/org.kde.okular/x86_64/stable
+app/org.kde.kcalc/x86_64/stable
+app/org.kde.haruna/x86_64/stable
+app/io.github.DenysMb.Kontainer/x86_64/stable
+app/org.kde.filelight/x86_64/stable
+app/com.ranfdev.DistroShelf/x86_64/stable
+app/it.mijorus.gearlever/x86_64/stable
+app/com.github.tchx84.Flatseal/x86_64/stable
+app/com.github.Matoking.protontricks/x86_64/stable
+app/io.github.flattool.Warehouse/x86_64/stable
+app/com.vysp3r.ProtonPlus/x86_64/stable
+app/net.davidotek.pupgui2/x86_64/stable
+app/org.gnome.Firmware/x86_64/stable
+
+# --- Gaming overlays & capture plugins (Bazzite ISO set) ---
+runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/25.08
+runtime/org.freedesktop.Platform.VulkanLayer.vkBasalt/x86_64/25.08
+runtime/org.freedesktop.Platform.VulkanLayer.OBSVkCapture/x86_64/25.08
+runtime/com.obsproject.Studio.Plugin.OBSVkCapture/x86_64/stable
+runtime/com.obsproject.Studio.Plugin.Gstreamer/x86_64/stable
+runtime/com.obsproject.Studio.Plugin.GStreamerVaapi/x86_64/stable

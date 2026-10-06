@@ -1,0 +1,75 @@
+# BlueBuild recipe — Bazzite-based gaming image
+# Reference: https://blue-build.org/reference/
+name: devon-bazzite
+description: >
+  Bazzite-based image with Noctalia, Umbriel and MangoWM desktop sessions,
+  Brave Origin browser and Faugus Launcher.
+
+base-image: ghcr.io/ublue-os/bazzite
+image-version: latest # tracks Bazzite stable (currently Fedora 44)
+
+modules:
+  # Bazzite ships the Terra repos disabled (its own build disables them during
+  # cleanup). Re-enable them and leave them enabled — Terra is the default
+  # package source for everything it carries (mangowm, umbriel, ghostty,
+  # faugus-launcher). terra-mesa stays off: Mesa comes from Valve's build.
+  - type: script
+    snippets:
+      - sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/terra.repo /etc/yum.repos.d/terra-extras.repo
+
+  - type: rpm-ostree
+    repos:
+      # Brave Origin browser — official Brave repo (https://brave.com/origin/linux/)
+      - https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+    install:
+      # MangoWM — dwl-based tiling Wayland compositor (Terra; 0.17.5 = current upstream)
+      - mangowm
+      # Umbriel compositor — Terra, nightly builds
+      - umbriel-nightly
+      - xdg-desktop-portal-umbriel # XDG portal for the Umbriel session (screenshare etc.)
+      # Brave Origin browser
+      - brave-origin
+      # Faugus Launcher — UMU-based launcher (Terra; umu-launcher already ships in Bazzite)
+      - faugus-launcher
+      # Ghostty terminal — Terra has priority=1 over Fedora in Bazzite's repo files
+      - ghostty
+      # Virtualization stack — QEMU/KVM host with virt-manager GUI
+      - libvirt # meta: libvirt-daemon-kvm + default NAT network config + client
+      - qemu-kvm
+      - virt-manager
+      - virt-install
+      - virt-viewer # SPICE client — needed for live USB redirection into guests
+      - edk2-ovmf # UEFI firmware for guests
+      - swtpm
+      - swtpm-tools # emulated TPM (Windows 11 guests)
+      - usbredir # SPICE USB redirection host side
+    # Exclusions: add a `remove:` list here after reviewing Bazzite's preinstalled
+    # packages — see README.md ("Finding Bazzite's preinstalled apps").
+    # remove:
+    #   - example-package
+
+  # Noctalia is in Fedora official (5.2.1) but Terra also carries an older
+  # 5.0 beta, and Terra has priority=1 — with Terra now enabled by default,
+  # a plain install would resolve to Terra's beta. Install from Fedora only.
+  - type: script
+    snippets:
+      - dnf5 -y install --disablerepo='terra*' noctalia
+
+  # Autostart libvirt's default NAT network so new VMs have connectivity
+  # out of the box.
+  - type: script
+    snippets:
+      - mkdir -p /etc/libvirt/qemu/networks/autostart
+      - ln -sf ../default.xml /etc/libvirt/qemu/networks/autostart/default.xml
+
+  # Passwordless libvirt management for wheel users (Bazzite's primary user is
+  # in wheel), so virt-manager connects to qemu:///system without password prompts.
+  - type: files
+    files:
+      - source: system
+        destination: /
+
+  - type: systemd
+    system:
+      enabled:
+        - libvirtd.service

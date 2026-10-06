@@ -1,9 +1,7 @@
 # BlueBuild recipe — Bazzite-based gaming image
 # Reference: https://blue-build.org/reference/
 name: devon-bazzite
-description: >
-  Bazzite-based image with Noctalia, Umbriel and MangoWM desktop sessions,
-  Brave Origin browser and Faugus Launcher.
+description: Bazzite-based image with Noctalia, Umbriel and MangoWM sessions, Brave Origin and Faugus Launcher
 
 base-image: ghcr.io/ublue-os/bazzite
 image-version: latest # tracks Bazzite stable (currently Fedora 44)

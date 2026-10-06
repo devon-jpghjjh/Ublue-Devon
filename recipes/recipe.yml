@@ -18,6 +18,11 @@ modules:
       # need source RPM metadata and it's extra churn on Terra's side.
       - sed -i '/^\[terra-source\]/,/^\[/{s/^enabled=1/enabled=0/}' /etc/yum.repos.d/terra.repo
       - sed -i '/^\[terra-extras-source\]/,/^\[/{s/^enabled=1/enabled=0/}' /etc/yum.repos.d/terra-extras.repo
+      # Use baseurl instead of the metalink: tetsudou serves stale checksums
+      # while Terra re-syncs repodata, which fails dnf with spurious checksum
+      # mismatches. The metalink only points at repos.fyralabs.com anyway, and
+      # repomd integrity is still enforced via repo_gpgcheck signatures.
+      - sed -i 's@^metalink=@#metalink=@; s@^#baseurl=@baseurl=@' /etc/yum.repos.d/terra.repo /etc/yum.repos.d/terra-extras.repo
 
   - type: rpm-ostree
     repos:

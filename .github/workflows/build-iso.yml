@@ -35,6 +35,11 @@ jobs:
           version: "44" # Fedora release the installer is built from — bump on F45 rebase
           variant: kinoite # KDE Plasma installer environment
           flatpak_remote_refs: ${{ steps.refs.outputs.refs }}
+          # Creates the login user at install time (container installs have no
+          # user-creation screen; same trick as Bazzite's official ISO).
+          # Change the name/password in iso/set-default-user.tmpl, then change
+          # the password again on first login (`passwd`).
+          additional_templates: /github/workspace/iso/set-default-user.tmpl
 
       - name: Upload ISO to Job Artifact
         uses: actions/upload-artifact@v4
